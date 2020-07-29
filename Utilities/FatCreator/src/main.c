@@ -90,12 +90,12 @@ int main(int argc, char *argv[]) {
 	if(argc < 4) 
 	{
 		printf(argv[0]);
-		printf("\nUsage: FatCreater <type> [...]\n");
+		printf("\nUsage: FatCreator <type> [...]\n");
 		
-		printf("Usage: FatCreater disk <size in MB> <sorce img>\n");
-		printf("Usage: FatCreater boot <sorce img> <boot loader bin>\n");
-		printf("Usage: FatCreater fat32 <sorce img> <boot loader bin>\n");
-		printf("Usage: FatCreater fat32add <sorce img> <file> <path in FAT>\n");
+		printf("Usage: FatCreator disk <size in MB> <sorce img>\n");
+		printf("Usage: FatCreator boot <sorce img> <boot loader bin>\n");
+		printf("Usage: FatCreator fat32 <sorce img> <boot loader bin>\n");
+		printf("Usage: FatCreator fat32add <sorce img> <file> <path in FAT>\n");
 		
 		return 1;
 	}

@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(FatCreater C)
+project(FatCreator C)
 
-add_executable(FatCreater 
+add_executable(FatCreator 
 	src/main.c
 	src/fat_access.c
 	src/fat_cache.c
