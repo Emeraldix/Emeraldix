@@ -1,0 +1,16 @@
+FatCreater disk <size in MB> <sorce img>
+- создаёт образ диска (файл <sorce img>), размером в <size in MB> MB
+
+FatCreater boot <sorce img> <boot loader bin>
+- записывает на образ диска (файл <sorce img>), файл (<boot loader bin>) в первый сектор ( и последующие)
+
+FatCreater fat32 <sorce img> <boot loader bin>
+- записывает на образ диска (файл <sorce img>), файл (<boot loader bin>) в первый сектор ( и последующие) и BPB Fat32
+
+FatCreater fat32add <sorce img> <file> <path in FAT>
+- записывает на образ диска (файл <sorce img>), файл (<file>), по пути <path in FAT>
+
+Пример использования:
+FatCreater disk 10 c.img
+FatCreater fat32 c.img boot.bin 
+FatCreater fat32add c.img test.txt /data.txt
