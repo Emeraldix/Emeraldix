@@ -168,7 +168,9 @@ int main(int argc, char *argv[]) {
 		bpb.BPB_Media = 248; // hdd
 		bpb.BPB_FATsz16 = 0;
 		bpb.BPB_HiddSec = 0;
-		
+        bpb.BPB_SecPerTrk = 0x3f;
+        bpb.BPB_NumHeads = 0x10;
+
 		fseek(imgS, 0L, SEEK_END);
         int secNum = div_up(ftell(imgS), 512);
         fseek(imgS, 0L, SEEK_SET);
