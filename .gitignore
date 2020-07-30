@@ -1,0 +1,8 @@
+*.o
+*.bin
+*.img
+*.iso
+build/
+FatCreator
+CMakeFiles
+CMakeCache.txt
