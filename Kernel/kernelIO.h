@@ -25,8 +25,8 @@ void VGAInsert(const char* msg)
 
 	while(msg[j] != '\0') /* Считываем до конца строки */
 	{
-		videoBuff[i] = 0x07; /* Сообщаем черный цвет */
-		videoBuff[i+1] = msg[j]; /* Вводим символ */
+		videoBuff[i+1] = 0x07; /* Сообщаем черный цвет */
+		videoBuff[i] = msg[j]; /* Вводим символ */
 		++j; /* Счетчик для считывания символов из 'messageOutput' */
 		i = i + 2; /* Cчетчик для видеобуффера */
 	}

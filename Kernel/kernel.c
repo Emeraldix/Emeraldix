@@ -1,4 +1,5 @@
 #include "kernelIO.h"
+#include <stdarg.h>
 
 /**
  *	Точка входа в ядро.
