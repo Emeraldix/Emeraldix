@@ -1,4 +1,5 @@
 #include "kernelIO.h"
+#include "paging.h"
 #include <stdarg.h>
 
 /**

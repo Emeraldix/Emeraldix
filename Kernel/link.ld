@@ -7,5 +7,6 @@ SECTIONS
    .text : { *(.text) }
    .data : { *(.data) }
    .bss  : { *(.bss)  }
+   end = .; _end = .;
  }
  
