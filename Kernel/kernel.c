@@ -9,8 +9,7 @@
 void kernelMain()
 {
     /* Tests */
-    
-    VGASetCursor(30,5);
+    kClearScr();
     kPrintStr("Emeraldix test!",0x0a); // Output message
     VGANewLine();
 
@@ -18,12 +17,13 @@ void kernelMain()
     VGANewLine();
 
     kPrintStr("Emeraldix test!",0x0e);
+    VGANewLine();
 
-    VGASetCursor(30,8);
     kPrintStr("Emeraldix test!",0x0b);
+    VGANewLine();
 
-    VGASetCursor(30,9);
     kPrintStr("Emeraldix test!",0x07);
+    VGANewLine();
 
     install_gdt();
     kPrintStr("Success!", 0x0f);

@@ -1,6 +1,14 @@
 #include "kernelIO.h"
 #include "ioaccess.h"
 
+void kClearScr(void) {
+    char* ptr = (char*)VIDEOMEM;
+    for (int i = 0; i < 80*25*2; i++) {
+        ptr[i] = 0;
+    }
+    VGASetCursor(0, 0);
+}
+
 void kPrintStr(const char* msg,unsigned char color)
 {
     char* videoBuff = (char*) VIDEOMEM;
