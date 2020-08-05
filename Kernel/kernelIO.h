@@ -13,28 +13,14 @@
 
 
 /**
- * Выводит сообщение на экран
- * @param msg Выводимое сообщение
+ * Put a message on the screen
+ * @param msg The message
  */
-void VGAInsert(const char* msg)
-{
-	char* videoBuff = (char*) VIDEOMEM;
-
-	unsigned int i = 0;
-	unsigned int j = 0;
-
-	while(msg[j] != '\0') /* Считываем до конца строки */
-	{
-		videoBuff[i+1] = 0x07; /* Сообщаем черный цвет */
-		videoBuff[i] = msg[j]; /* Вводим символ */
-		++j; /* Счетчик для считывания символов из 'messageOutput' */
-		i = i + 2; /* Cчетчик для видеобуффера */
-	}
-}
+void VGAInsert(const char* msg);
 
 /**
- *	Устанавливает курсор
- *	@param x Положение курсора по оси X
- *	@param y Положение курсора по оси Y
+ *	Set cursor's coords
+ *	@param x X coordinate
+ *	@param y Y coordinate
  */
 void VGASetCursor(unsigned int x,unsigned int y);

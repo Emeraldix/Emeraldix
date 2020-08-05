@@ -1,12 +1,15 @@
+#include "gdt.h"
 #include "kernelIO.h"
 #include "paging.h"
 #include <stdarg.h>
 
 /**
- *	Точка входа в ядро.
+ *	Kernel entrypoint
  */
 void kernelMain()
 {
-	VGAInsert("Hello, World!"); // Выводим сообщение
-	return;
+	VGAInsert("Hello, World!");
+    install_gdt();
+	VGAInsert("Success!");
+    for (;;);
 }
