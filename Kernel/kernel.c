@@ -11,21 +11,21 @@ void kernelMain()
     /* Tests */
     
     VGASetCursor(30,5);
-    VGAInsert("Emeraldix test!",0x0a); // Output message
+    kPrintStr("Emeraldix test!",0x0a); // Output message
+    VGANewLine();
 
-    VGASetCursor(30,6);
-    VGAInsert("Emeraldix test!",0x04);
+    kPrintStr("Emeraldix test!",0x04);
+    VGANewLine();
 
-    VGASetCursor(30,7);
-    VGAInsert("Emeraldix test!",0x0e);
+    kPrintStr("Emeraldix test!",0x0e);
 
     VGASetCursor(30,8);
-    VGAInsert("Emeraldix test!",0x0b);
+    kPrintStr("Emeraldix test!",0x0b);
 
     VGASetCursor(30,9);
-    VGAInsert("Emeraldix test!",0x07);
+    kPrintStr("Emeraldix test!",0x07);
 
     install_gdt();
-    VGAInsert("Success!", 0x0f);
+    kPrintStr("Success!", 0x0f);
     for (;;);
 }

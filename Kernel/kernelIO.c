@@ -1,7 +1,7 @@
 #include "kernelIO.h"
 #include "ioaccess.h"
 
-void VGAInsert(const char* msg,unsigned char color)
+void kPrintStr(const char* msg,unsigned char color)
 {
     char* videoBuff = (char*) VIDEOMEM;
 
@@ -49,10 +49,8 @@ void VGASetCursor(unsigned int x,unsigned int y)
 
 void VGANewLine()
 {
-    uint16_t pos = (80 - getXCursor(VGAGetCursorPosition())) + 1;
-
-    outb(0x3D4, 0x0F);
-    outb(0x3D5, (uint8_t) (pos & 0xFF));
-    outb(0x3D4, 0x0E);
-    outb(0x3D5, (uint8_t) ((pos >> 8) & 0xFF));
+    uint16_t pos = VGAGetCursorPosition();
+    pos += 80;
+    pos -= pos % 80;
+    VGASetCursor(0, pos / 80);
 }

@@ -1,4 +1,7 @@
 #pragma once
+
+#include <stdint.h>
+
 #define VIDEOMEM 0xb8000
 
 // temp
@@ -16,13 +19,13 @@
 #define WHITE {255, 255, 255}
 #define EMERALD {11, 179, 141}
 
-typedef unsigned short uint16_t;
+void kClearScr(void);
 
 /**
  * Displays a message on the screen
  * @param msg What should be output
  */
-void VGAInsert(const char* msg,unsigned char color);
+void kPrintStr(const char* msg,unsigned char color);
 
 /**
  *	Set cursor position
