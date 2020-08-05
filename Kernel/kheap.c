@@ -25,7 +25,7 @@ uint32 kmalloc_a(uint32 sz, int align)
 uint32 kmalloc_p(uint32 sz, uint32 *phys)
 {
     uint32 tmp = placement_address;
-	if(phys)
+    if(phys)
     {
         *phys = placement_address;
     }

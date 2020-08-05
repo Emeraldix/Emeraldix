@@ -8,19 +8,19 @@ O_FILES += $(ASM_FILES:.asm=.o)
 all: build kernel
 
 kernel: $(O_FILES) link.ld 
-	ld -T link.ld -o build/$@ build/*.o -m elf_i386
+    ld -T link.ld -o build/$@ build/*.o -m elf_i386
 
 %.o: %.c
-	gcc -o build/$@ -c $< -ffreestanding -nostdlib -m32
+    gcc -o build/$@ -c $< -ffreestanding -nostdlib -m32
 
 %.o: %.asm
-	nasm -f elf32 -o build/$@ $<
+    nasm -f elf32 -o build/$@ $<
 
 build:
-	mkdir -p build
+    mkdir -p build
 
 test: kernel
-	qemu-system-x86_64 -kernel build/$<
+    qemu-system-x86_64 -kernel build/$<
 
 clean:
-	rm -rf build
+    rm -rf build

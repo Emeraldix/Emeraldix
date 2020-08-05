@@ -43,7 +43,7 @@ uint16_t VGAGetCursorPosition();
  */
 inline uint16_t getXCursor(uint16_t pos)
 {
-	return pos % VGA_WIDTH;
+    return pos % VGA_WIDTH;
 }
 
 /**
@@ -52,5 +52,5 @@ inline uint16_t getXCursor(uint16_t pos)
  */
 inline uint16_t getYCursor(uint16_t pos)
 {
-	return pos / VGA_WIDTH;
+    return pos / VGA_WIDTH;
 }

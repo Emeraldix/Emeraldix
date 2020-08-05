@@ -20,10 +20,10 @@ static inline void outb(uint16_t toPort, uint8_t val)
  */
 static inline uint8_t inb(uint16_t outPort)
 {
-	uint8_t ret;
-	__asm__ volatile ( "inb %1, %0"
-			: "=a"(ret)
-			: "Nd"(outPort) );
+    uint8_t ret;
+    __asm__ volatile ( "inb %1, %0"
+            : "=a"(ret)
+            : "Nd"(outPort) );
     
-	return ret;
+    return ret;
 }
