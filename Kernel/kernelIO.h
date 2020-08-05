@@ -38,6 +38,11 @@ void VGASetCursor(unsigned int x,unsigned int y);
 uint16_t VGAGetCursorPosition();
 
 /**
+ *	New line
+ */
+void VGANewLine();
+
+/**
  *	@param Cursor position
  *	@return X-axis cursor position
  */
