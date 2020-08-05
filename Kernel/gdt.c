@@ -3,7 +3,7 @@
 
 void encode_gdt(struct gdt_entry entry, char* target) {
     if (entry.limit > 65536 && (entry.limit & 0xfff) != 0xfff) {
-        VGAInsert("Failed to create a GDT entry");
+        VGAInsert("Failed to create a GDT entry", 2);
         for(;;);
     }
 
