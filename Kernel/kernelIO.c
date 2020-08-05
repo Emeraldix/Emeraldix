@@ -3,36 +3,32 @@
 
 void kClearScr(void) {
     char* ptr = (char*)VIDEOMEM;
-    for (int i = 0; i < 80*25*2; i++) {
+    for (int i = 0; i < VGA_WIDTH*VGA_HEIGHT*2; i++) {
         ptr[i] = 0;
     }
-    VGASetCursor(0, 0);
+    VGASetCursor(cur_x, cur_y);
 }
 
 void kPrintStr(const char* msg,unsigned char color)
 {
-    char* videoBuff = (char*) VIDEOMEM;
-
-    unsigned int i = (unsigned int) VGAGetCursorPosition();
-
-    i = i * 2;
-
-    if (i % 2 != 0)
-        i++;
+    char* videoBuff = (char*) VIDEOMEM + (cur_y * 80 + cur_x) * 2;
 
     unsigned int j = 0;
 
     while(msg[j] != '\0') 
     {
-        videoBuff[i+1] = color; 
-        videoBuff[i] = msg[j];
+        videoBuff[j * 2] = msg[j];
+        videoBuff[j * 2 + 1] = color; 
         ++j; 
-        i = i + 2;
     }
 
-    i /= 2;
-
-    VGASetCursor(i % VGA_WIDTH,i / VGA_WIDTH);
+    cur_x += j;
+    if (cur_x >= VGA_WIDTH) {
+        cur_x %= 25;
+        cur_y++;
+    }
+    if (cur_y >= VGA_HEIGHT) cur_y = 0;
+    VGASetCursor(cur_x, cur_y);
 }
 
 uint16_t VGAGetCursorPosition()
@@ -57,8 +53,7 @@ void VGASetCursor(unsigned int x,unsigned int y)
 
 void VGANewLine()
 {
-    uint16_t pos = VGAGetCursorPosition();
-    pos += 80;
-    pos -= pos % 80;
-    VGASetCursor(0, pos / 80);
+    cur_x = 0;
+    if(++cur_y >= VGA_HEIGHT) cur_y = 0;
+    VGASetCursor(cur_x, cur_y);
 }

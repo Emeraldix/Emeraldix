@@ -19,6 +19,8 @@
 #define WHITE {255, 255, 255}
 #define EMERALD {11, 179, 141}
 
+static char cur_x = 0, cur_y = 0;
+
 void kClearScr(void);
 
 /**
