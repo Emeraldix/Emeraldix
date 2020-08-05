@@ -23,6 +23,8 @@ static char cur_x = 0, cur_y = 0;
 
 void kClearScr(void);
 
+void kPrintChar(char c, char color);
+
 /**
  * Displays a message on the screen
  * @param msg What should be output

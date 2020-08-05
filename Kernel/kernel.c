@@ -10,22 +10,13 @@ void kernelMain()
 {
     /* Tests */
     kClearScr();
-    kPrintStr("Emeraldix test!",0x0a); // Output message
-    VGANewLine();
-
-    kPrintStr("Emeraldix test!",0x04);
-    VGANewLine();
-
-    kPrintStr("Emeraldix test!",0x0e);
-    VGANewLine();
-
-    kPrintStr("Emeraldix test!",0x0b);
-    VGANewLine();
-
-    kPrintStr("Emeraldix test!",0x07);
-    VGANewLine();
+    kPrintStr("Emeraldix test!\n",0x0a); // Output message
+    kPrintStr("Emeraldix test!\n",0x04);
+    kPrintStr("Emeraldix test!\n",0x0e);
+    kPrintStr("Emeraldix test!\n",0x0b);
+    kPrintStr("Emeraldix test!\n",0x07);
 
     install_gdt();
-    kPrintStr("Success!", 0x0f);
+    kPrintStr("Success!\n", 0x0f);
     for (;;);
 }

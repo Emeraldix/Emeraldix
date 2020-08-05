@@ -9,26 +9,32 @@ void kClearScr(void) {
     VGASetCursor(cur_x, cur_y);
 }
 
-void kPrintStr(const char* msg,unsigned char color)
-{
+void kPrintChar(char c, char color) {
     char* videoBuff = (char*) VIDEOMEM + (cur_y * 80 + cur_x) * 2;
 
-    unsigned int j = 0;
-
-    while(msg[j] != '\0') 
-    {
-        videoBuff[j * 2] = msg[j];
-        videoBuff[j * 2 + 1] = color; 
-        ++j; 
+    if (c == '\n') {
+        VGANewLine();
+        return;
     }
+    
+    videoBuff[0] = c;
+    videoBuff[1] = color;
 
-    cur_x += j;
-    if (cur_x >= VGA_WIDTH) {
+    if (++cur_x >= VGA_WIDTH) {
         cur_x %= 25;
         cur_y++;
     }
     if (cur_y >= VGA_HEIGHT) cur_y = 0;
     VGASetCursor(cur_x, cur_y);
+}
+
+void kPrintStr(const char* msg,unsigned char color)
+{
+    int j = 0;;
+    while(msg[j] != '\0') 
+    {
+        kPrintChar(msg[j++], color);
+    }
 }
 
 uint16_t VGAGetCursorPosition()
