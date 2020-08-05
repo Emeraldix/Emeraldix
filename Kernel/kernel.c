@@ -3,10 +3,26 @@
 #include <stdarg.h>
 
 /**
- *	Точка входа в ядро.
+ *	Main kernel
  */
 void kernelMain()
 {
-	VGAInsert("Hello, World!"); // Выводим сообщение
+	/* Тестирование */
+	
+	VGASetCursor(30,5);
+	VGAInsert("Emeraldix test!",0x0a); // Output message
+
+	VGASetCursor(30,6);
+	VGAInsert("Emeraldix test!",0x04);
+
+	VGASetCursor(30,7);
+	VGAInsert("Emeraldix test!",0x0e);
+
+	VGASetCursor(30,8);
+	VGAInsert("Emeraldix test!",0x0b);
+
+	VGASetCursor(30,9);
+	VGAInsert("Emeraldix test!",0x07);
+
 	return;
 }

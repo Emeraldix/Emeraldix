@@ -1,4 +1,9 @@
+#pragma once
 #define VIDEOMEM 0xb8000
+
+// temp
+#define VGA_WIDTH 80
+#define VGA_HEIGHT 25
 
 //Colors
 #define BLACK {0, 0, 0}
@@ -11,30 +16,41 @@
 #define WHITE {255, 255, 255}
 #define EMERALD {11, 179, 141}
 
+typedef unsigned short uint16_t;
 
 /**
- * Выводит сообщение на экран
- * @param msg Выводимое сообщение
+ * Displays a message on the screen
+ * @param msg What should be output
  */
-void VGAInsert(const char* msg)
+void VGAInsert(const char* msg,unsigned char color);
+
+/**
+ *	Set cursor position
+ *	@param x X-axis cursor position
+ *	@param y Y-axis cursor position
+ */
+void VGASetCursor(unsigned int x,unsigned int y);
+
+/**
+ *	Get cursor position
+ *	@return Cursor position
+ */
+uint16_t VGAGetCursorPosition();
+
+/**
+ *	@param Cursor position
+ *	@return X-axis cursor position
+ */
+inline uint16_t getXCursor(uint16_t pos)
 {
-	char* videoBuff = (char*) VIDEOMEM;
-
-	unsigned int i = 0;
-	unsigned int j = 0;
-
-	while(msg[j] != '\0') /* Считываем до конца строки */
-	{
-		videoBuff[i+1] = 0x07; /* Сообщаем черный цвет */
-		videoBuff[i] = msg[j]; /* Вводим символ */
-		++j; /* Счетчик для считывания символов из 'messageOutput' */
-		i = i + 2; /* Cчетчик для видеобуффера */
-	}
+	return pos % VGA_WIDTH;
 }
 
 /**
- *	Устанавливает курсор
- *	@param x Положение курсора по оси X
- *	@param y Положение курсора по оси Y
+ *	@param Cursor position
+ *	@return Y-axis cursor position
  */
-void VGASetCursor(unsigned int x,unsigned int y);
+inline uint16_t getYCursor(uint16_t pos)
+{
+	return pos / VGA_WIDTH;
+}

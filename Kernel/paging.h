@@ -24,5 +24,12 @@ struct PageDirectory
 	uint32 tablesPhysical[1024];
 };
 
+/**
+ *	TODO: Docs
+ */
 void InitPages();
+
+/**
+ *	TODO: Docs
+ */
 void OnPaging();
