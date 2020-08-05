@@ -46,7 +46,7 @@ void VGANewLine();
  *	@param Cursor position
  *	@return X-axis cursor position
  */
-inline uint16_t getXCursor(uint16_t pos)
+static inline uint16_t getXCursor(uint16_t pos)
 {
     return pos % VGA_WIDTH;
 }
@@ -55,7 +55,7 @@ inline uint16_t getXCursor(uint16_t pos)
  *	@param Cursor position
  *	@return Y-axis cursor position
  */
-inline uint16_t getYCursor(uint16_t pos)
+static inline uint16_t getYCursor(uint16_t pos)
 {
     return pos / VGA_WIDTH;
 }
