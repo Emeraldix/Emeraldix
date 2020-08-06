@@ -20,8 +20,8 @@ void kernelMain()
     kPrintStr("Success!\n", 0x0f);
     install_idt();
     kPrintStr("Success!\n", 0x0f);
-    install_gate(0, isr0, 0xf, 0x08);
-    //asm("int $0"); //doesn't work
+    install_gate(0x7f, isr0, 0x8e, 0x08);
+    asm("int $0x7f");
     kPrintStr("Success!\n", 0x0f);
 
     for (;;);
