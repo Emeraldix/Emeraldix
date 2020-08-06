@@ -5,7 +5,7 @@
 #include <stdarg.h>
 
 extern void isr0(void);
-extern void isr4(void);
+extern void isr14(void);
 
 /**
  *	Main kernel
@@ -22,9 +22,11 @@ void kernelMain()
     install_idt();
     kPrintStr("Success!\n", 0x0f);
     install_gate(0, isr0, 0x8f, 0x08);
+    install_gate(14, isr14, 0x8f, 0x08);
     int a = 2 / 0;
-    install_gate(4, isr4, 0x8f, 0x08);
-    asm("int $4");
+    InitPages();
+    PagingEnable();
+    int b = *(int*)(0x12345678);
     kPrintStr("Success!\n", 0x0f);
 
     for (;;);

@@ -11,7 +11,7 @@ kernel: $(O_FILES) link.ld
 	ld -T link.ld -o build/$@ build/*.o -m elf_i386
 
 %.o: %.c
-	gcc -o build/$@ -c $< -ffreestanding -nostdlib -m32
+	gcc -o build/$@ -c $< -ffreestanding -nostdlib -m32 -g
 
 %.o: %.asm
 	nasm -f elf32 -o build/$@ $<
