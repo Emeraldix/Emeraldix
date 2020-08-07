@@ -3,42 +3,36 @@
 #include "kheap.h"
 #include <stdint.h>
 
-union Page
+struct Page
 {
-    struct {
-        uint32 present    : 1;
-        uint32 rw         : 1;
-        uint32 user       : 1;
-        uint32 accessed   : 1;
-        uint32 dirty      : 1;
-        uint32 unused     : 7;
-        uint32 frame      : 20;
-    };
-    uint32_t raw_page;
+    uint32 present    : 1;
+    uint32 rw         : 1;
+    uint32 user       : 1;
+    uint32 accessed   : 1;
+    uint32 dirty      : 1;
+    uint32 unused     : 7;
+    uint32 frame      : 20;
 };
 
-struct PageTable 
+struct PageTable
 {
-    union Page pages[1024];
-} __attribute__((aligned(4096)));
+    struct Page pages[1024];
+};
 
 struct PageDirectory
 {
-    //struct PageTable* tables[1024];
+    struct PageTable* tables[1024];
     uint32 tablesPhysical[1024];
-} __attribute__((aligned(4096)));
+};
 
-static struct PageTable first_pt;
-static struct PageDirectory pd;
+struct PageDirectory* kdir;
 
-/**
- *	TODO: Docs
- */
-void InitPages();
+void KInit();
 
-/**
- *	TODO: Docs
- */
-void PagingEnable();
+void InitPages(struct PageDirectory* dir);
+void SwitchPageDir(struct PageDirectory* dir);
+struct Page* GetPage(uint32 index, char make, struct PageDirectory* dir, uint32 flags, char kernel);
+void* AllocPage(struct PageDirectory* dir, char kernel);
+void FreePage(void* firstInd, struct PageDirectory* dir);
 
 void PagingDisable();

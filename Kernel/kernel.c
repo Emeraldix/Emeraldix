@@ -1,6 +1,7 @@
 #include "gdt.h"
 #include "idt.h"
 #include "kernelIO.h"
+#include "stdlib.h"
 #include "paging.h"
 #include <stdarg.h>
 
@@ -8,7 +9,7 @@ extern void isr0(void);
 extern void isr14(void);
 
 /**
- *	Main kernel
+ *  Main kernel
  */
 void kernelMain()
 {
@@ -24,10 +25,19 @@ void kernelMain()
     install_gate(0, isr0, 0x8f, 0x08);
     install_gate(14, isr14, 0x8f, 0x08);
     int a = 2 / 0;
-    InitPages();
-    PagingEnable();
+    
+    KInit();
+    SwitchPageDir(kdir);
+    
     int b = *(int*)(0x12345678);
     kPrintStr("Success!\n", 0x0f);
+    
+    void* out = AllocPage(kdir, 1);
+    char snum[12];
+    itoa(out, snum, 10);
+    
+    if(out)
+        kPrintStr(snum, 0x0f);
 
     for (;;);
 }
