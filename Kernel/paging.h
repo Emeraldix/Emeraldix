@@ -26,13 +26,14 @@ struct PageDirectory
 };
 
 struct PageDirectory* kdir;
+struct PageDirectory* currdir;
 
 void KInit();
 
 void InitPages(struct PageDirectory* dir);
 void SwitchPageDir(struct PageDirectory* dir);
-struct Page* GetPage(uint32 index, char make, struct PageDirectory* dir, uint32 flags, char kernel);
-void* AllocPage(struct PageDirectory* dir, char kernel);
-void FreePage(void* firstInd, struct PageDirectory* dir);
+struct Page* GetPage(uint32 index, char make, uint32 flags, char kernel);
+void* AllocPage(char kernel);
+void FreePage(void* firstInd);
 
 void PagingDisable();

@@ -31,10 +31,12 @@ void KInit()
     pframeLimit = memcount/0x1000;
     
     kdir = (struct PageDirectory*)kmalloc_a(sizeof(struct PageDirectory), 1);
+    currdir = kdir;
+    
     uint32 i = 0;
     while(i < placement_address + 1)
     {
-        struct Page* p = GetPage(i/0x1000, 1, kdir, 0x7, 1);
+        struct Page* p = GetPage(i/0x1000, 1, 0x7, 1);
         p->present = 1; p->rw = 1; p->user = 0;
         p->frame = i/0x1000;
         
@@ -55,6 +57,7 @@ void InitPages(struct PageDirectory* dir)
 
 void SwitchPageDir(struct PageDirectory* dir)
 {
+    currdir = dir;
     __asm__ volatile ("mov %0, %%cr3"::"r"(&dir->tablesPhysical));
     uint32 cr0;
     __asm__ volatile ("mov %%cr0, %0": "=r"(cr0));
@@ -62,38 +65,38 @@ void SwitchPageDir(struct PageDirectory* dir)
     __asm__ volatile ("mov %0, %%cr0":: "r"(cr0));
 }
 
-struct Page* GetPage(uint32 index, char make, struct PageDirectory* dir, uint32 flags, char kernel)
+struct Page* GetPage(uint32 index, char make, uint32 flags, char kernel)
 {
     uint32 table_idx = index / 1024;
     uint32 table_idy = index % 1024;
-    if (dir->tables[table_idx])
-        return &dir->tables[table_idx]->pages[table_idy];
+    if (currdir->tables[table_idx])
+        return &currdir->tables[table_idx]->pages[table_idy];
     else if(make)
     {
         uint32 tmp;
         if(kernel)
         {
-            dir->tables[table_idx] = kmalloc_a(sizeof(struct PageTable), 1);
-            tmp = dir->tables[table_idx];
+            currdir->tables[table_idx] = kmalloc_a(sizeof(struct PageTable), 1);
+            tmp = currdir->tables[table_idx];
         }
         //else
-        //  dir->tables[table_idx] = //TODO: malloc & tmp phys address
-        memset(dir->tables[table_idx], 0, 0x1000);
-        dir->tablesPhysical[table_idx] = tmp | flags;
+        //  currdir->tables[table_idx] = //TODO: malloc & tmp phys address
+        memset(currdir->tables[table_idx], 0, 0x1000);
+        currdir->tablesPhysical[table_idx] = tmp | flags;
         
-        return &dir->tables[table_idx]->pages[table_idy];
+        return &currdir->tables[table_idx]->pages[table_idy];
     }
     else
         return 0;
 }
 
-void* AllocPage(struct PageDirectory* dir, char kernel)
+void* AllocPage(char kernel)
 {
     uint32 index = 0;
     struct Page* p = 0;
     for(uint32 i = 0; i < 1024 * 1024; ++i)
     {
-        p = GetPage(i, 1, dir, 0x7, kernel);
+        p = GetPage(i, 1, 0x7, 0);
         if(p->present)
             p = 0;
         else
@@ -110,15 +113,19 @@ void* AllocPage(struct PageDirectory* dir, char kernel)
     if(!AllocFrame(&frame))
         return 0;
     
-    p->present = 1; p->rw = 1; p->user = 1;
+    if(kernel)
+        p->user = 0;
+    else
+        p->user = 1;
+    p->present = 1; p->rw = 1;
     p->frame = frame;
     
     return index * 0x1000;
 }
 
-void FreePage(void* firstInd, struct PageDirectory* dir)
+void FreePage(void* firstInd)
 {
-    struct Page* p = GetPage((uint32)firstInd/0x1000, 0, dir, 0, 0);
+    struct Page* p = GetPage((uint32)firstInd/0x1000, 0, 0, 0);
     
     if(p)
         if(p->present)

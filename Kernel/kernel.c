@@ -32,12 +32,13 @@ void kernelMain()
     int b = *(int*)(0x12345678);
     kPrintStr("Success!\n", 0x0f);
     
-    void* out = AllocPage(kdir, 1);
-    char snum[12];
-    itoa(out, snum, 10);
+    char* hh = (char*)malloc(sizeof(char) * 6);
     
-    if(out)
-        kPrintStr(snum, 0x0f);
+    if(hh)
+    {
+        hh = "Test\n";
+        kPrintStr(hh, 0x0f);
+    }
 
     for (;;);
 }
