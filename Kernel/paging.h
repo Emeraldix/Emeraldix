@@ -25,8 +25,8 @@ struct PageDirectory
     uint32 tablesPhysical[1024];
 };
 
-struct PageDirectory* kdir;
-struct PageDirectory* currdir;
+static struct PageDirectory* kdir;
+static struct PageDirectory* currdir;
 
 void KInit();
 

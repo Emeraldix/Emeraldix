@@ -27,7 +27,6 @@ void kernelMain()
     int a = 2 / 0;
     
     KInit();
-    SwitchPageDir(kdir);
     
     int b = *(int*)(0x12345678);
     kPrintStr("Success!\n", 0x0f);

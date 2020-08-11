@@ -48,6 +48,7 @@ void KInit()
         FreeFrame(i/0x1000);
         i += 0x1000;
     }
+    SwitchPageDir(kdir);
 }
 
 void InitPages(struct PageDirectory* dir)
