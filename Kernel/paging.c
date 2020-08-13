@@ -1,9 +1,8 @@
 #include "paging.h"
-#include "stdlib.h"
 
 extern uint32 placement_address;
 
-static uint32 pframeUp = 0;
+static uint32 pframeUp = 0; // Atomic...
 static uint32 pframeLimit = 0;
 static uint32* pframe = 0;
 
@@ -33,6 +32,11 @@ void KInit()
     kdir = (struct PageDirectory*)kmalloc_a(sizeof(struct PageDirectory), 1);
     currdir = kdir;
     
+    for(uint32 i = 0; i < 1024; ++i)
+    {
+        GetPage(i * 1024, 1, 0x7, 1);
+    }
+    
     uint32 i = 0;
     while(i < placement_address + 1)
     {
@@ -51,15 +55,39 @@ void KInit()
     SwitchPageDir(kdir);
 }
 
-void InitPages(struct PageDirectory* dir)
+void InitPages(struct PageDirectory* dir, void* ptr, size_t pages)
 {
-    // Need malloc
+    struct PageDirectory* tmp = currdir;
+    currdir = dir;
+    GetPage(0, 1, 0x7, 0);
+    currdir = tmp;
+    
+    uint32 opptr = (uint32)ptr/0x1000;
+    uint32 lastAlloc = 0;
+    for(uint32 i = 0; i < pages; ++i)
+    {
+        uint32 table_idx = i / 1024;
+        if(table_idx > lastAlloc)
+        {
+            tmp = currdir;
+            currdir = dir;
+            GetPage(table_idx * 0x1000, 1, 0x7, 0);
+            currdir = tmp;
+        }
+        uint32 table_idy = i % 1024;
+        struct Page* p = &dir->tables[table_idx]->pages[table_idy];
+        p->user = 1; p->present = 1; p->rw = 1;
+        p->frame = GetPage(opptr + i, 0, 0, 0)->frame;
+    }
 }
 
 void SwitchPageDir(struct PageDirectory* dir)
 {
+    uint32* tmp = &dir->tablesPhysical;
+    if(dir != kdir)
+        tmp = GetPage((uint32)&dir->tablesPhysical/0x1000, 0, 0, 0)->frame * 0x1000;
     currdir = dir;
-    __asm__ volatile ("mov %0, %%cr3"::"r"(&dir->tablesPhysical));
+    __asm__ volatile ("mov %0, %%cr3"::"r"(tmp));
     uint32 cr0;
     __asm__ volatile ("mov %%cr0, %0": "=r"(cr0));
     cr0 |= 0x80000000;
@@ -80,8 +108,20 @@ struct Page* GetPage(uint32 index, char make, uint32 flags, char kernel)
             currdir->tables[table_idx] = kmalloc_a(sizeof(struct PageTable), 1);
             tmp = currdir->tables[table_idx];
         }
-        //else
-        //  currdir->tables[table_idx] = //TODO: malloc & tmp phys address
+        else
+        {
+            struct PageDirectory* dir = currdir;
+            currdir = kdir;
+            void* tmp_k = aligned_alloc(0x1000, sizeof(struct PageTable));
+            if(!tmp_k)
+            {
+                currdir = dir;
+                return 0;
+            }
+            currdir = dir;
+            currdir->tables[table_idx] = tmp_k;
+            tmp = GetPage((uint32)currdir->tables[table_idx]/0x1000, 0, 0, 0)->frame * 0x1000;
+        }
         memset(currdir->tables[table_idx], 0, 0x1000);
         currdir->tablesPhysical[table_idx] = tmp | flags;
         

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "kheap.h"
+#include "stdlib.h"
 #include <stdint.h>
 
 struct Page
@@ -30,7 +31,7 @@ static struct PageDirectory* currdir;
 
 void KInit();
 
-void InitPages(struct PageDirectory* dir);
+void InitPages(struct PageDirectory* dir, void* ptr, size_t pages);
 void SwitchPageDir(struct PageDirectory* dir);
 struct Page* GetPage(uint32 index, char make, uint32 flags, char kernel);
 void* AllocPage(char kernel);

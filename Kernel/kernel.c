@@ -28,7 +28,6 @@ void kernelMain()
     
     KInit();
     
-    int b = *(int*)(0x12345678);
     kPrintStr("Success!\n", 0x0f);
     
     char* hh = (char*)malloc(sizeof(char) * 6);

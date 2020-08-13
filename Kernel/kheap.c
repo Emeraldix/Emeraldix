@@ -12,7 +12,7 @@ uint32 kmalloc(uint32 sz)
 
 uint32 kmalloc_a(uint32 sz, char align)
 {
-    if(align && (placement_address & 0xFFFFF000))
+    if(align && (placement_address & 0xFFF))
     {
         placement_address &= 0xFFFFF000;
         placement_address += 0x1000;
